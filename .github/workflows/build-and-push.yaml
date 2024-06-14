@@ -1,0 +1,31 @@
+---
+name: 'Build and Push'
+
+on:
+  push:
+    branches:
+      - "main"
+  workflow_dispatch:
+
+jobs:
+  fedora40:
+    name: fedora40
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Login to ghcr.io
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build and push image
+        uses: docker/build-push-action@v3
+        with:
+          file: Dockerfiles/fedora40
+          tags: ghcr.io/${{ github.repository }}:fedora40
+          push: true
+

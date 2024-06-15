@@ -1,0 +1,14 @@
+# vim: ft=dockerfile
+
+FROM docker.io/fedora:40
+
+# Install flatpak
+RUN dnf update -y && \
+    dnf install -y \
+      flatpak
+
+# Configure flatpak
+RUN flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+ENTRYPOINT []
+
